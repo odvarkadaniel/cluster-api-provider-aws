@@ -157,6 +157,12 @@ type AWSMachineSpec struct {
 	// +optional
 	// +kubebuilder:validation:Enum:=default;dedicated;host
 	Tenancy string `json:"tenancy,omitempty"`
+
+	// MetadataServiceOptions allows users to configure instance metadata service interaction options.
+	// If nothing specified, default AWS IMDS settings will be applied.
+	// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceMetadataOptionsRequest.html
+	// +optional
+	MetadataServiceOptions MetadataServiceOptions `json:"metadataServiceOptions,omitempty"`
 }
 
 // CloudInit defines options related to the bootstrapping systems where

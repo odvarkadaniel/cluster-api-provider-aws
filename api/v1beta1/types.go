@@ -291,3 +291,28 @@ const (
 	// AmazonLinuxGPU is the AmazonLinux GPU AMI type.
 	AmazonLinuxGPU EKSAMILookupType = "AmazonLinuxGPU"
 )
+
+// MetadataServiceAuthetication specifies whether we want to enforce IMDSv2 or to keep it optional.
+type MetadataServiceAuthentication string
+
+const (
+	// MetadataServiceAuthenticationRequired enforces sending of a signed token header with any instance metadata retrieval (GET) requests.
+	// Enforces IMDSv2 usage.
+	MetadataServiceAuthenticationRequired = "Required"
+	// MetadataServiceAuthenticationOptional allows IMDSv1 usage along with IMDSv2
+	MetadataServiceAuthenticationOptional = "Optional"
+)
+
+// MetadataServiceOptions defines the options available to a user when configuring
+// Instance Metadata Service (IMDS) Options.
+type MetadataServiceOptions struct {
+	// Authentication determines whether or not the host requires the use of authentication when interacting with the metadata service.
+	// When using authentication, this enforces v2 interaction method (IMDSv2) with the metadata service.
+	// When omitted, this means the user has no opinion and the value is left to the platform to choose a good
+	// default, which is subject to change over time. The current default is optional.
+	// At this point this field represents `HttpTokens` parameter from `InstanceMetadataOptionsRequest` structure in AWS EC2 API
+	// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceMetadataOptionsRequest.html
+	// +kubebuilder:validation:Enum=Required;Optional
+	// +optional
+	Authentication MetadataServiceAuthentication `json:"authentication,omitempty"`
+}
